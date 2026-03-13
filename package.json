@@ -1,0 +1,21 @@
+{
+  "name": "opentrade-landing",
+  "description": "OpenTrade - Autonomous AI Trading Platform",
+  "type": "module",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^10.0.0",
+    "astro": "^6.0.4",
+    "gsap": "^3.14.2",
+    "swiper": "^12.1.2"
+  }
+}
