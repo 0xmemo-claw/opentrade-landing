@@ -101,24 +101,14 @@ const agents = [
     </div>
   </div>
 
-  <!-- Card stack scroll section -->
-  <div class="agents-stack-outer" id="agents-stack-outer">
-    <div class="agents-stack-inner" id="agents-stack-inner">
-      <!-- Stack of cards -->
-      <div class="agents-stack" id="agents-stack">
-        {agents.map((agent, i) => (
-          <div
-            class="agent-card-stack card"
-            data-index={i}
-            style={`--agent-color: ${agent.color}; --card-index: ${i};`}
-          >
-            <!-- Scroll progress bar at top of each card -->
-            <div class="card-progress-bar">
-              <div class="card-progress-fill" id={`card-progress-${i}`}></div>
-            </div>
-
-            <!-- Card content -->
-            <div class="agent-card-content">
+  <!-- Cards stacked (Avax Why pattern) -->
+  <div class="agents-stack">
+    {agents.map((agent, i) => (
+      <div
+        class="agent-card-stack"
+        style={`--agent-color: ${agent.color};`}
+      >
+        <div class="agent-card-content">
               <!-- Header -->
               <div class="agent-header">
                 <div class="agent-avatar" style={`background: linear-gradient(135deg, ${agent.color}33, ${agent.color}11); border: 1px solid ${agent.color}55`}>
@@ -186,9 +176,6 @@ const agents = [
                 <span class="token-price mono" style={`color:${agent.color}`}>{agent.tokenPrice}</span>
               </div>
             </div>
-
-            <!-- Card number indicator -->
-            <div class="card-num-indicator mono">{i + 1}/{agents.length}</div>
           </div>
         ))}
       </div>
@@ -219,37 +206,33 @@ const agents = [
   }
 
   /* ─── Card stack section ── */
-  .agents-stack-outer {
-    height: 600vh; /* Scroll distance for 6 cards */
-    position: relative;
-  }
-
-  .agents-stack-inner {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
+  /* EXACT Avax Why pattern: flex column stack, all visible */
   .agents-stack {
-    position: relative;
-    width: min(480px, 90vw);
-    height: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
   }
 
-  /* Individual stacked cards */
   .agent-card-stack {
-    position: absolute;
     width: 100%;
-    top: 0;
-    left: 0;
-    border-color: var(--bg-border);
-    will-change: transform, opacity;
-    transform-origin: top center;
-    overflow: hidden;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: border-color 0.3s ease, background 0.3s ease;
+    opacity: 0;
+    transform: translateX(-50px);
     border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .agent-card-stack.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .agent-card-stack:hover {
+    border-color: rgba(255,255,255,0.12);
+    background: #0f0f0f;
   }
 
   .card-progress-bar {
@@ -364,108 +347,26 @@ const agents = [
 
 <script>
   import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  // ─── Header reveals ───────────────────────────────────
-  gsap.set(['#agents-label', '#agents-title', '.agents-cta-btn'], { opacity: 0 });
-  gsap.set(['#agents-label', '#agents-title'], { y: 50 });
-  gsap.set('.agents-cta-btn', { x: 20 });
-
-  ScrollTrigger.create({
-    trigger: '.agents-header',
-    start: 'top 85%',
-    onEnter: () => {
-      gsap.to('#agents-label', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' });
-      gsap.to('#agents-title', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 });
-      gsap.to('.agents-cta-btn', { x: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
-    }
-  });
-
-  // ─── Card stack scroll animation ─────────────────────
-  // Pure scrub approach: map scroll progress → card states directly.
-  // No GSAP timeline. Just onUpdate with direct gsap.set calls.
-  // This avoids timeline scrub complications entirely.
-
-  const cards = Array.from(document.querySelectorAll('.agent-card-stack')) as HTMLElement[];
-  const totalCards = cards.length;
-
-  function applyCardStates(totalProgress: number) {
-    cards.forEach((card, i) => {
-      const cardFill = document.getElementById(`card-progress-${i}`);
-      
-      // Each card has an equal share of progress [segStart, segEnd]
-      const segStart = i / totalCards;
-      const segEnd = (i + 1) / totalCards;
-      const segSize = 1 / totalCards;
-
-      // localProg: 0 = card just entered, 1 = card just exited
-      const localProg = (totalProgress - segStart) / segSize;
-
-      if (localProg < 0) {
-        // Upcoming card — in the stack below the active card
-        const depthBehind = Math.round(-localProg * totalCards);
-        const clampedDepth = Math.min(depthBehind, totalCards - 1);
-        gsap.set(card, {
-          y: clampedDepth * 14,
-          scale: Math.max(0.7, 1 - clampedDepth * 0.04),
-          opacity: Math.max(0, 1 - clampedDepth * 0.18),
-          zIndex: totalCards - clampedDepth,
-        });
-        if (cardFill) cardFill.style.width = '0%';
-
-      } else if (localProg < 1) {
-        // Active card — front and center
-        // First half: card arrives and sits, second half: card starts to exit
-        const exitThreshold = 0.7;
-        
-        if (localProg < exitThreshold) {
-          // Active: scale up to 1, full opacity, top z-index
-          const arrivalProg = localProg / exitThreshold; // 0→1
-          gsap.set(card, {
-            y: gsap.utils.interpolate(0, -6, arrivalProg),
-            scale: gsap.utils.interpolate(1, 1.02, arrivalProg),
-            opacity: 1,
-            zIndex: totalCards + 2,
-          });
-          if (cardFill) cardFill.style.width = `${(localProg / exitThreshold) * 70}%`;
-        } else {
-          // Exiting: fly off upward
-          const exitProg = (localProg - exitThreshold) / (1 - exitThreshold); // 0→1
-          gsap.set(card, {
-            y: gsap.utils.interpolate(-6, -180, exitProg),
-            scale: gsap.utils.interpolate(1.02, 0.9, exitProg),
-            opacity: gsap.utils.interpolate(1, 0, exitProg * 1.5),
-            zIndex: totalCards + 2,
-          });
-          if (cardFill) cardFill.style.width = `${70 + exitProg * 30}%`;
-        }
-
-      } else {
-        // Already exited
-        gsap.set(card, {
-          y: -200,
-          scale: 0.88,
+  
+  // EXACT Avax Why pattern: simple IntersectionObserver stagger
+  const cards = document.querySelectorAll('.agent-card-stack');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        const idx = Array.from(cards).indexOf(el);
+        gsap.from(el, {
+          x: -50,
           opacity: 0,
-          zIndex: 0,
+          duration: 0.8,
+          delay: idx * 0.1,
+          ease: 'power3.out'
         });
-        if (cardFill) cardFill.style.width = '100%';
+        observer.unobserve(el);
       }
     });
-  }
-
-  // Initialize
-  applyCardStates(0);
-
-  ScrollTrigger.create({
-    trigger: '#agents-stack-outer',
-    pin: '#agents-stack-inner',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 1.2,
-    onUpdate: (self) => {
-      applyCardStates(self.progress);
-    }
-  });
+  }, { threshold: 0.2 });
+  
+  cards.forEach(card => observer.observe(card));
 </script>
