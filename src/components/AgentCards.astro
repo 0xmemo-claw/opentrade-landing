@@ -225,27 +225,35 @@ const agents = [
 </style>
 
 <script>
-  import gsap from 'gsap';
-  
   // EXACT Avax Why pattern: GSAP staggered animation
-  const items = document.querySelectorAll('.agent-card');
+  // Wait for GSAP CDN to load
+  const waitForGsap = setInterval(() => {
+    if (typeof gsap !== 'undefined') {
+      clearInterval(waitForGsap);
+      initAnimation();
+    }
+  }, 50);
   
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target as HTMLElement;
-        const idx = Array.from(items).indexOf(el);
-        gsap.from(el, {
-          x: -50,
-          opacity: 0,
-          duration: 0.8,
-          delay: idx * 0.1,
-          ease: 'power3.out'
-        });
-        observer.unobserve(el);
-      }
-    });
-  }, { threshold: 0.2 });
-  
-  items.forEach(item => observer.observe(item));
+  function initAnimation() {
+    const items = document.querySelectorAll('.agent-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const idx = Array.from(items).indexOf(el);
+          gsap.from(el, {
+            x: -50,
+            opacity: 0,
+            duration: 0.8,
+            delay: idx * 0.1,
+            ease: 'power3.out'
+          });
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.2 });
+    
+    items.forEach(item => observer.observe(item));
+  }
 </script>
