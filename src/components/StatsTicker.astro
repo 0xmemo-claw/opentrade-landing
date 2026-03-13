@@ -2,30 +2,45 @@
 ---
 <section class="stats-section" id="stats">
   <div class="stats-bar">
-    <div class="container">
+    <!-- Grid parallax background -->
+    <div class="stats-grid-bg grid-bg" id="stats-grid-bg"></div>
+
+    <div class="container" style="position:relative;z-index:1">
       <div class="stats-grid">
         <div class="stat-item" data-target="284700000" data-prefix="$" data-suffix="" data-decimals="0">
           <div class="stat-value" id="stat-volume">$0</div>
           <div class="stat-label">Total Trading Volume</div>
           <div class="stat-change positive">+12.4% <span>this week</span></div>
+          <div class="stat-progress-bar">
+            <div class="stat-progress-fill stat-progress-1"></div>
+          </div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item" data-target="1247" data-prefix="" data-suffix="">
           <div class="stat-value" id="stat-agents">0</div>
           <div class="stat-label">Active AI Agents</div>
           <div class="stat-change positive">+89 <span>new today</span></div>
+          <div class="stat-progress-bar">
+            <div class="stat-progress-fill stat-progress-2"></div>
+          </div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item" data-target="67.8" data-prefix="" data-suffix="%" data-decimals="1">
           <div class="stat-value" id="stat-winrate">0%</div>
           <div class="stat-label">Avg Win Rate</div>
           <div class="stat-change positive">+2.3% <span>vs last week</span></div>
+          <div class="stat-progress-bar">
+            <div class="stat-progress-fill stat-progress-3"></div>
+          </div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item" data-target="4800000" data-prefix="$" data-suffix="" data-decimals="0">
           <div class="stat-value" id="stat-buyback">$0</div>
           <div class="stat-label">Total Buybacks</div>
           <div class="stat-change positive">+$840k <span>this week</span></div>
+          <div class="stat-progress-bar">
+            <div class="stat-progress-fill stat-progress-4"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -45,6 +60,13 @@
     padding: 3rem 0;
     position: relative;
     overflow: hidden;
+  }
+
+  .stats-grid-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    will-change: transform;
   }
 
   .stats-bar::before {
@@ -68,13 +90,8 @@
     padding: 1rem 2rem;
     text-align: center;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .stat-item.visible {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(30px);
+    will-change: opacity, transform;
   }
 
   .stat-value {
@@ -86,6 +103,7 @@
     line-height: 1;
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
+    will-change: contents;
   }
 
   .stat-label {
@@ -101,12 +119,34 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 600;
+    margin-bottom: 0.75rem;
   }
 
   .stat-change span {
     color: var(--text-muted);
     font-weight: 400;
   }
+
+  /* Scroll progress bars under each stat */
+  .stat-progress-bar {
+    height: 2px;
+    background: rgba(0, 240, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .stat-progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+  }
+
+  .stat-progress-1 { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  .stat-progress-2 { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .stat-progress-3 { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+  .stat-progress-4 { background: var(--yellow, #FFE600); box-shadow: 0 0 6px #FFE600; }
 
   .stat-divider {
     width: 1px;
@@ -120,24 +160,21 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto auto;
     }
-
-    .stat-divider {
-      display: none;
-    }
-
-    .stat-item {
-      border-bottom: 1px solid var(--bg-border);
-    }
+    .stat-divider { display: none; }
+    .stat-item { border-bottom: 1px solid var(--bg-border); }
   }
 
   @media (max-width: 480px) {
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
+    .stats-grid { grid-template-columns: 1fr; }
   }
 </style>
 
 <script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
   function formatNumber(num: number, prefix: string, suffix: string, decimals: number): string {
     if (num >= 1000000) {
       return prefix + (num / 1000000).toFixed(1) + 'M' + suffix;
@@ -149,59 +186,79 @@
     return prefix + Math.floor(num).toLocaleString() + suffix;
   }
 
-  function animateCounter(el: HTMLElement, target: number, prefix: string, suffix: string, decimals: number, duration = 2000) {
-    const start = performance.now();
-
-    function update(now: number) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = eased * target;
-      el.textContent = formatNumber(current, prefix, suffix, decimals);
-
-      if (progress < 1) {
-        requestAnimationFrame(update);
-      }
+  // ─── Parallax grid background (counter to stats scrolling up) ────
+  gsap.to('#stats-grid-bg', {
+    yPercent: 15,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#stats',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1,
     }
+  });
 
-    requestAnimationFrame(update);
-  }
+  // ─── Stats entrance with stagger ────────────────────────────────
+  const items = document.querySelectorAll('.stat-item');
 
-  // Intersection observer to trigger on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const items = document.querySelectorAll('.stat-item');
-        items.forEach((item, i) => {
-          setTimeout(() => {
-            item.classList.add('visible');
-            const target = parseFloat(item.getAttribute('data-target') || '0');
-            const prefix = item.getAttribute('data-prefix') || '';
-            const suffix = item.getAttribute('data-suffix') || '';
-            const decimals = parseInt(item.getAttribute('data-decimals') || '0');
-            const valueEl = item.querySelector('.stat-value') as HTMLElement;
-            if (valueEl) {
-              animateCounter(valueEl, target, prefix, suffix, decimals, 2000 + i * 200);
-            }
-          }, i * 150);
+  gsap.to(items, {
+    opacity: 1,
+    y: 0,
+    duration: 0.7,
+    stagger: 0.15,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.stats-bar',
+      start: 'top 75%',
+      once: true,
+    }
+  });
+
+  // ─── Scrubbed counter animation ────────────────────────────────
+  // Numbers count up as you scroll into the section
+  let animated = false;
+
+  ScrollTrigger.create({
+    trigger: '.stats-bar',
+    start: 'top 70%',
+    onEnter: () => {
+      if (animated) return;
+      animated = true;
+
+      items.forEach((item, i) => {
+        const target = parseFloat(item.getAttribute('data-target') || '0');
+        const prefix = item.getAttribute('data-prefix') || '';
+        const suffix = item.getAttribute('data-suffix') || '';
+        const decimals = parseInt(item.getAttribute('data-decimals') || '0');
+        const valueEl = item.querySelector('.stat-value') as HTMLElement;
+        const progressEl = item.querySelector('.stat-progress-fill') as HTMLElement;
+
+        if (!valueEl) return;
+
+        const obj = { value: 0, progress: 0 };
+        gsap.to(obj, {
+          value: target,
+          progress: 1,
+          duration: 2.5,
+          delay: i * 0.2,
+          ease: 'power2.out',
+          onUpdate() {
+            valueEl.textContent = formatNumber(obj.value, prefix, suffix, decimals);
+            if (progressEl) progressEl.style.width = `${obj.progress * 100}%`;
+          }
         });
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
+      });
+    }
+  });
 
-  const statsSection = document.querySelector('.stats-bar');
-  if (statsSection) observer.observe(statsSection);
-
-  // Live number fluctuation after animation
+  // ─── Live number fluctuation ─────────────────────────────────
   setTimeout(() => {
     setInterval(() => {
       const volumeEl = document.getElementById('stat-volume');
-      if (volumeEl) {
+      if (volumeEl && animated) {
         const base = 284700000 + Math.random() * 500000 - 250000;
         volumeEl.textContent = '$' + (base / 1000000).toFixed(1) + 'M';
       }
     }, 3000);
-  }, 4000);
+  }, 5000);
 </script>

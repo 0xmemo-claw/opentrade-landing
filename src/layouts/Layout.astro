@@ -45,8 +45,64 @@ const {
 
   <!-- Global CSS -->
   <link rel="stylesheet" href="/src/styles/global.css" />
+
+  <style>
+    /* ─── Reveal Mask CSS (global) ── */
+    .reveal-mask {
+      overflow: hidden;
+      display: block;
+    }
+    .reveal-text {
+      display: block;
+      will-change: transform;
+    }
+    /* Clip-path reveal for section labels */
+    .clip-reveal {
+      display: inline-block;
+      will-change: clip-path;
+    }
+    /* Horizontal scroll container */
+    .h-scroll-track {
+      display: flex;
+      will-change: transform;
+    }
+  </style>
 </head>
 <body>
   <slot />
 </body>
 </html>
+
+<script>
+  // Lenis smooth scroll init
+  // Using UMD version loaded inline to avoid module path issues
+  (async () => {
+    try {
+      // Dynamically import Lenis
+      const { default: Lenis } = await import('@studio-freight/lenis');
+      
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true,
+        smoothTouch: false,
+      });
+
+      // Store globally for GSAP ScrollTrigger integration
+      (window as any)._lenis = lenis;
+
+      // RAF loop
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Dispatch event so components can use ScrollTrigger with lenis
+      window.dispatchEvent(new CustomEvent('lenis-ready', { detail: lenis }));
+    } catch (e) {
+      console.warn('Lenis init failed, using native scroll', e);
+      window.dispatchEvent(new CustomEvent('lenis-ready', { detail: null }));
+    }
+  })();
+</script>

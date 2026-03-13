@@ -1,41 +1,50 @@
 ---
 ---
 <section class="hero" id="hero">
-  <!-- Animated background -->
+  <!-- Animated background layers (parallax) -->
   <div class="hero-bg">
-    <div class="hero-grid grid-bg"></div>
+    <div class="hero-grid grid-bg" id="hero-grid-parallax"></div>
     <div class="hero-gradient"></div>
-    <canvas id="particle-canvas" class="hero-canvas"></canvas>
+    <!-- Particle layer (slower parallax) -->
+    <canvas id="particle-canvas" class="hero-canvas" data-parallax-speed="0.3"></canvas>
+    <!-- Floating orbs (medium parallax) -->
+    <div class="hero-orb orb-1" data-parallax-speed="0.15"></div>
+    <div class="hero-orb orb-2" data-parallax-speed="0.25"></div>
+    <div class="hero-orb orb-3" data-parallax-speed="0.1"></div>
   </div>
 
   <!-- Scan line effect -->
   <div class="scan-line"></div>
 
-  <div class="hero-content container">
+  <!-- Foreground content (faster parallax) -->
+  <div class="hero-content container" id="hero-foreground">
     <!-- Left: Terminal -->
     <div class="hero-terminal-wrapper">
-      <div class="terminal hero-terminal animate-glow-pulse">
-        <div class="terminal-header">
-          <div class="terminal-dot" style="background:#FF5F56"></div>
-          <div class="terminal-dot" style="background:#FFBD2E"></div>
-          <div class="terminal-dot" style="background:#27C93F"></div>
-          <span style="margin-left:0.5rem;font-family:var(--font-mono);font-size:0.75rem;color:#8090b0">opentrade-agent v2.4.1</span>
-        </div>
-        <div class="terminal-body" id="terminal-output">
-          <div class="terminal-line">
-            <span class="terminal-prompt"></span>
-            <span id="typing-text"></span><span class="animate-blink" style="color:#00F0FF">█</span>
+      <!-- Sliding reveal wrapper -->
+      <div class="reveal-mask">
+        <div class="terminal hero-terminal animate-glow-pulse reveal-text" id="hero-terminal-reveal">
+          <div class="terminal-header">
+            <div class="terminal-dot" style="background:#FF5F56"></div>
+            <div class="terminal-dot" style="background:#FFBD2E"></div>
+            <div class="terminal-dot" style="background:#27C93F"></div>
+            <span style="margin-left:0.5rem;font-family:var(--font-mono);font-size:0.75rem;color:#8090b0">opentrade-agent v2.4.1</span>
           </div>
-          <div id="terminal-history"></div>
+          <div class="terminal-body" id="terminal-output">
+            <div class="terminal-line">
+              <span class="terminal-prompt"></span>
+              <span id="typing-text"></span><span class="animate-blink" style="color:#00F0FF">█</span>
+            </div>
+            <div id="terminal-history"></div>
+          </div>
         </div>
       </div>
 
       <!-- Floating stats -->
-      <div class="hero-float-card float-1">
+      <div class="hero-float-card float-1" id="float-card-1">
         <div class="float-label">24h PnL</div>
         <div class="float-value positive">+$47,291</div>
       </div>
-      <div class="hero-float-card float-2">
+      <div class="hero-float-card float-2" id="float-card-2">
         <div class="float-label">Active Agents</div>
         <div class="float-value" style="color:#8B5CF6">1,247</div>
       </div>
@@ -43,21 +52,25 @@
 
     <!-- Right: Copy -->
     <div class="hero-copy">
-      <div class="section-label">AI Trading Platform</div>
+      <div class="reveal-mask">
+        <div class="section-label reveal-text" id="hero-label-reveal">AI Trading Platform</div>
+      </div>
 
       <h1 class="hero-heading">
-        <span class="text-gradient-cyan">Trade Smarter.</span><br>
-        Never Sleep.<br>
-        <span class="glow-green">Never Emote.</span>
+        <div class="reveal-mask"><div class="reveal-text" id="hero-h1-1"><span class="text-gradient-cyan">Trade Smarter.</span></div></div>
+        <div class="reveal-mask"><div class="reveal-text" id="hero-h1-2">Never Sleep.</div></div>
+        <div class="reveal-mask"><div class="reveal-text" id="hero-h1-3"><span class="glow-green">Never Emote.</span></div></div>
       </h1>
 
-      <p class="hero-desc">
-        Deploy autonomous AI agents that execute trades 24/7 with zero emotional bias.
-        Each agent launches its own token — fees auto-buyback, profits reinforce the flywheel.
-        <span style="color:#00F0FF;font-family:var(--font-mono)">Pure alpha. On Base.</span>
-      </p>
+      <div class="reveal-mask" style="margin-top:1rem">
+        <p class="hero-desc reveal-text" id="hero-desc-reveal">
+          Deploy autonomous AI agents that execute trades 24/7 with zero emotional bias.
+          Each agent launches its own token — fees auto-buyback, profits reinforce the flywheel.
+          <span style="color:#00F0FF;font-family:var(--font-mono)">Pure alpha. On Base.</span>
+        </p>
+      </div>
 
-      <div class="hero-actions">
+      <div class="hero-actions" id="hero-actions">
         <a href="#deploy" class="btn btn-primary" style="font-size:1rem;padding:0.875rem 2rem">
           Deploy Your Agent
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -67,7 +80,7 @@
         </a>
       </div>
 
-      <div class="hero-badges">
+      <div class="hero-badges" id="hero-badges">
         <span class="badge badge-cyan">Base Chain</span>
         <span class="badge badge-green">Non-Custodial</span>
         <span class="badge badge-purple">Agent Tokens</span>
@@ -153,6 +166,7 @@
     position: absolute;
     inset: 0;
     opacity: 0.6;
+    will-change: transform;
   }
 
   .hero-gradient {
@@ -168,6 +182,40 @@
     position: absolute;
     inset: 0;
     opacity: 0.4;
+    will-change: transform;
+  }
+
+  /* Floating orb parallax elements */
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,240,255,0.08), transparent 70%);
+    top: -100px;
+    right: -100px;
+  }
+
+  .orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%);
+    bottom: 100px;
+    left: -50px;
+  }
+
+  .orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0,255,136,0.06), transparent 70%);
+    top: 40%;
+    left: 30%;
   }
 
   .scan-line {
@@ -191,6 +239,7 @@
     align-items: center;
     padding-top: 4rem;
     padding-bottom: 2rem;
+    will-change: transform;
   }
 
   /* Terminal */
@@ -243,6 +292,8 @@
     padding: 0.75rem 1rem;
     backdrop-filter: blur(10px);
     animation: float 3s ease-in-out infinite;
+    opacity: 0;
+    will-change: transform, opacity;
   }
 
   .float-1 {
@@ -297,12 +348,15 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
   }
 
   .hero-badges {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    opacity: 0;
   }
 
   /* Ticker */
@@ -365,7 +419,118 @@
 </style>
 
 <script>
-  // Typing terminal animation
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Connect GSAP ScrollTrigger with Lenis
+  window.addEventListener('lenis-ready', (e: Event) => {
+    const lenis = (e as CustomEvent).detail;
+    if (lenis) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time: number) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+    }
+  });
+
+  // ─── Hero entrance animations ───────────────────────────
+  const tl = gsap.timeline({ delay: 0.2 });
+
+  // Reveal text elements
+  tl.to('#hero-label-reveal', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' })
+    .to('#hero-h1-1', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+    .to('#hero-h1-2', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+    .to('#hero-h1-3', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+    .to('#hero-desc-reveal', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+    .to('#hero-terminal-reveal', { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }, '-=0.6')
+    .to('.hero-actions', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+    .to('.hero-badges', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+    .to('#float-card-1', { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+    .to('#float-card-2', { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.3');
+
+  // Set initial states
+  gsap.set(['#hero-label-reveal', '#hero-h1-1', '#hero-h1-2', '#hero-h1-3', '#hero-desc-reveal', '#hero-terminal-reveal'], {
+    y: 60,
+    opacity: 0
+  });
+
+  // ─── Parallax layers on scroll ───────────────────────────
+  // Grid parallax (slowest - background)
+  gsap.to('#hero-grid-parallax', {
+    yPercent: -20,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1,
+    }
+  });
+
+  // Canvas particles (medium speed)
+  gsap.to('#particle-canvas', {
+    yPercent: -35,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1.5,
+    }
+  });
+
+  // Orbs (different speeds for depth effect)
+  gsap.to('.orb-1', {
+    yPercent: -15,
+    xPercent: 5,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 2,
+    }
+  });
+
+  gsap.to('.orb-2', {
+    yPercent: -25,
+    xPercent: -3,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1.2,
+    }
+  });
+
+  gsap.to('.orb-3', {
+    yPercent: -30,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 0.8,
+    }
+  });
+
+  // Hero foreground content (faster = feels closest)
+  gsap.to('#hero-foreground', {
+    yPercent: -8,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 0.5,
+    }
+  });
+
+  // ─── Typing terminal animation ─────────────────────────
   const sequences = [
     {
       cmd: 'opentrade agent create --strategy momentum --risk 0.02',
@@ -397,8 +562,6 @@
   ];
 
   let seqIndex = 0;
-  let charIndex = 0;
-  let isTyping = false;
   const typingEl = document.getElementById('typing-text');
   const historyEl = document.getElementById('terminal-history');
   const MAX_HISTORY = 12;
@@ -422,7 +585,6 @@
     line.textContent = text;
     historyEl?.appendChild(line);
 
-    // Keep history manageable
     const lines = historyEl?.querySelectorAll('div') || [];
     if (lines.length > MAX_HISTORY) {
       lines[0]?.remove();
@@ -434,11 +596,8 @@
     const seq = sequences[seqIndex % sequences.length];
     seqIndex++;
 
-    // Type command
     const cmd = seq.cmd;
-    charIndex = 0;
     if (typingEl) typingEl.textContent = '';
-    isTyping = true;
 
     for (const char of cmd) {
       if (typingEl) typingEl.textContent += char;
@@ -446,26 +605,21 @@
     }
 
     await sleep(400);
-
-    // Move command to history
     addToHistory(cmd, 'cmd');
     if (typingEl) typingEl.textContent = '';
 
-    // Show outputs
     for (const out of seq.outputs) {
       await sleep(300 + Math.random() * 200);
       addToHistory(out.text, out.type);
     }
 
     await sleep(2500);
-    isTyping = false;
     runSequence();
   }
 
-  // Start after a short delay
-  setTimeout(runSequence, 1000);
+  setTimeout(runSequence, 1200);
 
-  // Particle canvas
+  // ─── Particle canvas ──────────────────────────────────
   const canvas = document.getElementById('particle-canvas') as HTMLCanvasElement;
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -488,19 +642,19 @@
     const particles: Particle[] = [];
     const COLORS = ['#00F0FF', '#00FF88', '#8B5CF6'];
 
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 70; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
         size: Math.random() * 2 + 0.5,
-        alpha: Math.random() * 0.6 + 0.2,
+        alpha: Math.random() * 0.5 + 0.1,
         color: COLORS[Math.floor(Math.random() * COLORS.length)]
       });
     }
 
-    function animate() {
+    function animateParticles() {
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -521,18 +675,17 @@
         ctx.globalAlpha = 1;
       });
 
-      // Draw connections
       particles.forEach((a, i) => {
         particles.slice(i + 1).forEach(b => {
           const dx = a.x - b.x;
           const dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          if (dist < 100) {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.strokeStyle = '#00F0FF';
-            ctx.globalAlpha = (1 - dist / 120) * 0.15;
+            ctx.globalAlpha = (1 - dist / 100) * 0.12;
             ctx.lineWidth = 0.5;
             ctx.stroke();
             ctx.globalAlpha = 1;
@@ -540,9 +693,9 @@
         });
       });
 
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateParticles);
     }
 
-    animate();
+    animateParticles();
   }
 </script>

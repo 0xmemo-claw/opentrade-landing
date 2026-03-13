@@ -175,17 +175,11 @@ ul, ol { list-style: none; }
 .mono { font-family: var(--font-mono); }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 50%, var(--green) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--cyan);
 }
 
 .text-gradient-cyan {
-  background: linear-gradient(135deg, #fff 0%, var(--cyan) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
 }
 
 /* ─── Section Layout ─────────────────────────────────────── */
