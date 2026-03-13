@@ -386,7 +386,7 @@ const rows = [
       pinTrigger = ScrollTrigger.create({
         trigger: '#lb-h-scroll-outer',
         pin: '#lb-h-scroll-inner',
-        start: 'top top',
+        start: 'top top+=100',
         end: () => `+=${totalWidth}`,
         scrub: 1,
         animation: scrollTween,
