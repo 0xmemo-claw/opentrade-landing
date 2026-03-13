@@ -1,52 +1,64 @@
 ---
 const agents = [
   {
+    num: "01",
     name: "Alpha-7",
-    strategy: "Momentum trading strategy with positive 7-day performance.",
+    desc: "Momentum trading strategy with positive 7-day performance of +23.4%.",
     pnl7d: "+$12,847",
     pnlPct: "+23.4%",
     positive: true,
     color: "#00F0FF",
+    bg: "#021a1a"
   },
   {
+    num: "02",
     name: "Mochi-9",
-    strategy: "Sentiment trading strategy with positive 7-day performance.",
+    desc: "Sentiment trading strategy with positive 7-day performance of +18.9%.",
     pnl7d: "+$8,291",
     pnlPct: "+18.9%",
     positive: true,
     color: "#00FF88",
+    bg: "#021a0a"
   },
   {
+    num: "03",
     name: "Zeta-3",
-    strategy: "Arbitrage trading strategy with negative 7-day performance.",
+    desc: "Arbitrage trading strategy with negative 7-day performance of -2.8%.",
     pnl7d: "-$1,204",
     pnlPct: "-2.8%",
     positive: false,
     color: "#FF394A",
+    bg: "#1a0202"
   },
   {
+    num: "04",
     name: "Nexus-1",
-    strategy: "Mean reversion trading strategy with positive 7-day performance.",
+    desc: "Mean reversion trading strategy with positive 7-day performance of +41.2%.",
     pnl7d: "+$19,440",
     pnlPct: "+41.2%",
     positive: true,
     color: "#8B5CF6",
+    bg: "#1a0a2a"
   },
   {
+    num: "05",
     name: "Byte-12",
-    strategy: "On-chain intel trading strategy with positive 7-day performance.",
+    desc: "On-chain intel trading strategy with positive 7-day performance of +15.3%.",
     pnl7d: "+$6,102",
     pnlPct: "+15.3%",
     positive: true,
     color: "#FFE600",
+    bg: "#1a1a02"
   },
   {
+    num: "06",
     name: "Oracle-X",
-    strategy: "ML prediction trading strategy with positive 7-day performance.",
+    desc: "ML prediction trading strategy with positive 7-day performance of +52.7%.",
     pnl7d: "+$24,810",
     pnlPct: "+52.7%",
     positive: true,
     color: "#FF6B00",
+    bg: "#1a0f02"
   },
 ];
 ---
@@ -62,21 +74,23 @@ const agents = [
 
     <div class="agents-items">
       {agents.map((agent, i) => (
-        <div class="agent-card" data-reveal style={`--item-bg: #0a0a0a; --item-accent: ${agent.color}`}>
+        <div class="agent-card" data-reveal style={`--item-bg: ${agent.bg}; --item-accent: ${agent.color}`}>
           <div class="agent-card-inner">
             <div class="agent-top">
-              <div class="agent-avatar-block">
+              <div class="agent-number-block">
                 <div class="agent-icon">
                   <svg viewBox="0 0 60 60" fill="none">
                     <polygon points="30,5 55,50 5,50" stroke={agent.color} stroke-width="2" fill="none" opacity="0.5"/>
                     <polygon points="30,15 45,45 15,45" fill={agent.color} opacity="0.2"/>
                   </svg>
                 </div>
-                <p class="agent-num">{String(i + 1).padStart(2, '0')}</p>
+                <p class="agent-num">{agent.num}</p>
               </div>
-              <div class="agent-info">
-                <h3 class="agent-name">{agent.name}</h3>
-                <p class="agent-desc">{agent.strategy}</p>
+              <div class="agent-content">
+                <div class="agent-text">
+                  <h3 class="agent-name">{agent.name}</h3>
+                  <p class="agent-desc">{agent.desc}</p>
+                </div>
               </div>
             </div>
             <div class="agent-pnl">
@@ -165,7 +179,7 @@ const agents = [
     flex: 1;
   }
 
-  .agent-avatar-block {
+  .agent-number-block {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -191,8 +205,16 @@ const agents = [
     letter-spacing: 0.1em;
   }
 
-  .agent-info {
+  .agent-content {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-xl);
+  }
+
+  .agent-text {
+    max-width: 700px;
   }
 
   .agent-name {
@@ -273,7 +295,7 @@ const agents = [
       gap: 1rem;
     }
 
-    .agent-avatar-block {
+    .agent-number-block {
       flex-direction: row;
       width: auto;
     }
@@ -289,7 +311,7 @@ const agents = [
       padding: 1.5rem;
     }
 
-    .agent-title {
+    .agent-name {
       font-size: var(--text-4xl);
     }
   }
@@ -299,13 +321,13 @@ const agents = [
   import gsap from 'gsap';
   
   // EXACT Avax Why pattern: simple IntersectionObserver stagger
-  const cards = document.querySelectorAll('.agent-card');
+  const items = document.querySelectorAll('.agent-card');
   
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const el = entry.target as HTMLElement;
-        const idx = Array.from(cards).indexOf(el);
+        const idx = Array.from(items).indexOf(el);
         gsap.from(el, {
           x: -50,
           opacity: 0,
@@ -318,5 +340,5 @@ const agents = [
     });
   }, { threshold: 0.2 });
   
-  cards.forEach(card => observer.observe(card));
+  items.forEach(item => observer.observe(item));
 </script>
