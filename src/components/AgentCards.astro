@@ -2,60 +2,60 @@
 const agents = [
   {
     num: "01",
-    name: "Alpha-7",
+    title: "ALPHA-7",
     desc: "Momentum trading strategy with positive 7-day performance of +23.4%.",
-    pnl7d: "+$12,847",
-    pnlPct: "+23.4%",
+    pnl: "+$12,847",
+    pct: "+23.4%",
     positive: true,
     color: "#00F0FF",
     bg: "#021a1a"
   },
   {
     num: "02",
-    name: "Mochi-9",
+    title: "MOCHI-9",
     desc: "Sentiment trading strategy with positive 7-day performance of +18.9%.",
-    pnl7d: "+$8,291",
-    pnlPct: "+18.9%",
+    pnl: "+$8,291",
+    pct: "+18.9%",
     positive: true,
     color: "#00FF88",
     bg: "#021a0a"
   },
   {
     num: "03",
-    name: "Zeta-3",
+    title: "ZETA-3",
     desc: "Arbitrage trading strategy with negative 7-day performance of -2.8%.",
-    pnl7d: "-$1,204",
-    pnlPct: "-2.8%",
+    pnl: "-$1,204",
+    pct: "-2.8%",
     positive: false,
     color: "#FF394A",
     bg: "#1a0202"
   },
   {
     num: "04",
-    name: "Nexus-1",
+    title: "NEXUS-1",
     desc: "Mean reversion trading strategy with positive 7-day performance of +41.2%.",
-    pnl7d: "+$19,440",
-    pnlPct: "+41.2%",
+    pnl: "+$19,440",
+    pct: "+41.2%",
     positive: true,
     color: "#8B5CF6",
     bg: "#1a0a2a"
   },
   {
     num: "05",
-    name: "Byte-12",
+    title: "BYTE-12",
     desc: "On-chain intel trading strategy with positive 7-day performance of +15.3%.",
-    pnl7d: "+$6,102",
-    pnlPct: "+15.3%",
+    pnl: "+$6,102",
+    pct: "+15.3%",
     positive: true,
     color: "#FFE600",
     bg: "#1a1a02"
   },
   {
     num: "06",
-    name: "Oracle-X",
+    title: "ORACLE-X",
     desc: "ML prediction trading strategy with positive 7-day performance of +52.7%.",
-    pnl7d: "+$24,810",
-    pnlPct: "+52.7%",
+    pnl: "+$24,810",
+    pct: "+52.7%",
     positive: true,
     color: "#FF6B00",
     bg: "#1a0f02"
@@ -65,43 +65,25 @@ const agents = [
 
 <section class="agents-section section">
   <div class="container" style="max-width: 100%; padding: 0;">
-    <div class="agents-header" data-reveal style="padding: 0 2rem;">
+    <div class="agents-header" data-reveal style="padding: 0 4rem; margin-bottom: 3rem;">
       <h2 class="agents-title">
         <span class="title-line">Top</span>
         <span class="title-line title-highlight">Trading Agents</span>
       </h2>
     </div>
 
-    <div class="agents-items" style="width: 100%;">
+    <div class="agents-items" style="padding: 0 4rem;">
       {agents.map((agent, i) => (
         <div class="agent-card" data-reveal style={`--item-bg: ${agent.bg}; --item-accent: ${agent.color}`}>
           <div class="agent-card-inner">
-            <div class="agent-top">
-              <div class="agent-number-block">
-                <div class="agent-icon">
-                  <svg viewBox="0 0 60 60" fill="none">
-                    <polygon points="30,5 55,50 5,50" stroke={agent.color} stroke-width="2" fill="none" opacity="0.5"/>
-                    <polygon points="30,15 45,45 15,45" fill={agent.color} opacity="0.2"/>
-                  </svg>
-                </div>
-                <p class="agent-num">{agent.num}</p>
-              </div>
-              <div class="agent-content">
-                <div class="agent-text">
-                  <h3 class="agent-name">{agent.name}</h3>
-                  <p class="agent-desc">{agent.desc}</p>
-                </div>
-              </div>
+            <div class="agent-number">{agent.num}</div>
+            <div class="agent-content">
+              <h3 class="agent-title">{agent.title}</h3>
+              <p class="agent-desc">{agent.desc}</p>
             </div>
             <div class="agent-pnl">
-              <div class={`pnl-value mono ${agent.positive ? 'positive' : 'negative'}`}>{agent.pnl7d}</div>
-              <div class={`pnl-pct mono ${agent.positive ? 'positive' : 'negative'}`}>{agent.pnlPct}</div>
-            </div>
-            <div class="agent-symbol">
-              <svg viewBox="0 0 100 100" fill="none">
-                <polygon points="50,5 95,95 5,95" stroke={agent.color} stroke-width="1.5" fill="none"/>
-                <polygon points="50,25 75,75 25,75" fill={agent.color} opacity="0.15"/>
-              </svg>
+              <div class={`pnl-value mono ${agent.positive ? 'positive' : 'negative'}`}>{agent.pnl}</div>
+              <div class={`pnl-pct mono ${agent.positive ? 'positive' : 'negative'}`}>{agent.pct}</div>
             </div>
           </div>
         </div>
@@ -113,17 +95,13 @@ const agents = [
 <style>
   .agents-section {
     background: var(--color-neutral-950);
-    padding-top: var(--padding-3xl);
-    padding-bottom: var(--padding-3xl);
-  }
-
-  .agents-header {
-    margin-bottom: var(--gap-2xl);
+    padding-top: 6rem;
+    padding-bottom: 6rem;
   }
 
   .agents-title {
-    font-size: var(--text-8xl);
-    line-height: var(--leading-normal);
+    font-size: 4rem;
+    line-height: 1.1;
     font-weight: 400;
     text-transform: uppercase;
   }
@@ -146,16 +124,9 @@ const agents = [
   .agent-card {
     background: var(--item-bg, #0a0a0a);
     border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
+    border-radius: 16px;
     overflow: hidden;
-    clip-path: polygon(
-      0% 0%,
-      100% 0%,
-      100% calc(100% - 30px),
-      calc(100% - 30px) 100%,
-      0% 100%
-    );
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
   .agent-card:hover {
@@ -165,72 +136,36 @@ const agents = [
   .agent-card-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 3rem 4rem;
-    position: relative;
-    z-index: 2;
-    gap: 3rem;
+    padding: 2.5rem 3rem;
+    gap: 2rem;
   }
 
-  .agent-top {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--gap-xl);
-    flex: 1;
-  }
-
-  .agent-number-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    flex-shrink: 0;
-    width: clamp(3rem, 5vw, 5rem);
-  }
-
-  .agent-icon {
-    width: clamp(2.5rem, 4vw, 4rem);
-    height: clamp(2.5rem, 4vw, 4rem);
-  }
-
-  .agent-icon svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .agent-num {
-    font-size: var(--text-xs);
-    color: var(--color-neutral-400);
-    font-weight: 600;
+  .agent-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-neutral-500);
     letter-spacing: 0.1em;
+    flex-shrink: 0;
   }
 
   .agent-content {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--gap-xl);
   }
 
-  .agent-text {
-    max-width: 900px;
-  }
-
-  .agent-name {
-    font-size: var(--text-5xl);
-    font-weight: 400;
+  .agent-title {
+    font-size: 2rem;
+    font-weight: 700;
     text-transform: uppercase;
     color: var(--color-white);
-    margin-bottom: 1rem;
-    line-height: var(--leading-normal);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
   }
 
   .agent-desc {
-    font-size: var(--text-base);
+    font-size: 1rem;
     color: var(--color-neutral-400);
     line-height: 1.6;
-    max-width: 60ch;
+    max-width: 700px;
   }
 
   .agent-pnl {
@@ -239,91 +174,62 @@ const agents = [
   }
 
   .pnl-value {
-    font-size: var(--text-4xl);
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
   }
 
   .pnl-value.positive { color: #00FF88; }
   .pnl-value.negative { color: #FF394A; }
 
   .pnl-pct {
-    font-size: var(--text-base);
+    font-size: 0.9rem;
     opacity: 0.8;
   }
 
   .pnl-pct.positive { color: #00FF88; }
   .pnl-pct.negative { color: #FF394A; }
 
-  .agent-symbol {
-    width: clamp(4rem, 7vw, 7rem);
-    height: clamp(4rem, 7vw, 7rem);
-    flex-shrink: 0;
-    opacity: 0.4;
-    transition: opacity 0.3s ease;
-  }
-
-  .agent-symbol svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .agent-card:hover .agent-symbol {
-    opacity: 0.7;
-  }
-
-  /* Item accent glow */
-  .agent-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 40%;
-    height: 100%;
-    background: radial-gradient(ellipse at 80% 50%, var(--item-accent, transparent) 0%, transparent 70%);
-    opacity: 0.08;
-    pointer-events: none;
-  }
-
   @media (max-width: 1024px) {
     .agent-card-inner {
-      padding: var(--padding-xl);
-    }
-
-    .agent-top {
+      padding: 2rem;
       flex-direction: column;
-      gap: 1rem;
+      align-items: flex-start;
+      gap: 1.5rem;
     }
 
-    .agent-number-block {
-      flex-direction: row;
-      width: auto;
+    .agent-pnl {
+      text-align: left;
     }
 
-    .agent-symbol {
-      display: none;
+    .agents-header,
+    .agents-items {
+      padding-left: 2rem;
+      padding-right: 2rem;
     }
   }
 
   @media (max-width: 768px) {
-    .agent-card-inner {
-      flex-direction: column;
-      padding: 1.5rem;
+    .agents-title {
+      font-size: 2.5rem;
     }
 
-    .agent-name {
-      font-size: var(--text-4xl);
+    .agent-title {
+      font-size: 1.5rem;
+    }
+
+    .agent-card-inner {
+      padding: 1.5rem;
     }
   }
 </style>
 
 <script>
-  // EXACT Avax Why pattern: simple IntersectionObserver stagger
-  const items = document.querySelectorAll('.agent-card');
+  // Simple staggered fade-in animation
+  const cards = document.querySelectorAll('.agent-card');
   
-  // Initial state: all cards hidden and offset
-  items.forEach((item, idx) => {
-    const el = item as HTMLElement;
+  cards.forEach((card, idx) => {
+    const el = card as HTMLElement;
     el.style.opacity = '0';
     el.style.transform = 'translateX(-50px)';
     el.style.transition = `opacity 0.8s ${idx * 0.1}s ease, transform 0.8s ${idx * 0.1}s ease`;
@@ -342,5 +248,5 @@ const agents = [
     });
   }, { threshold: 0.2 });
   
-  items.forEach(item => observer.observe(item));
+  cards.forEach(card => observer.observe(card));
 </script>
