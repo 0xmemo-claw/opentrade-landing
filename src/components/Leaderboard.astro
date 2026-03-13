@@ -49,8 +49,9 @@ const rows = [
             <div class="lbc-header">
               <div class="lbc-rank">
                 {row.rank <= 3 ? (
-                  <span class="rank-medal">
-                    {row.rank === 1 ? '🥇' : row.rank === 2 ? '🥈' : '🥉'}
+                  <span class="rank-medal" style={`color: ${row.rank === 1 ? '#FFD700' : row.rank === 2 ? '#C0C0C0' : '#CD7F32'}`}>
+                    {/* Award / Medal icon */}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
                   </span>
                 ) : (
                   <span class="mono rank-num" style="color:#3d4f70">#{row.rank}</span>
@@ -240,7 +241,7 @@ const rows = [
   }
 
   .lbc-rank { min-width: 28px; }
-  .rank-medal { font-size: 1.3rem; }
+  .rank-medal { display: flex; align-items: center; }
   .rank-num { font-size: 0.85rem; }
 
   .lbc-agent { flex: 1; }

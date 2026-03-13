@@ -207,7 +207,7 @@ ul, ol { list-style: none; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cyan);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
@@ -220,6 +220,13 @@ ul, ol { list-style: none; }
   height: 1px;
   background: var(--cyan);
   box-shadow: 0 0 8px var(--cyan);
+}
+
+/* Centered section labels — used in text-center contexts */
+.text-center .section-label,
+.how-header .section-label {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */

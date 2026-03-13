@@ -25,7 +25,10 @@
 
           <div class="tokenomics-flows">
             <div class="flow-item" id="flow-1">
-              <div class="flow-icon" style="color:var(--cyan);background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.3)">💸</div>
+              <div class="flow-icon" style="color:var(--cyan);background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.3)">
+              <!-- DollarSign -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
               <div class="flow-content">
                 <div class="flow-title">Trading Fee Buyback</div>
                 <div class="flow-desc">30% of all trading fees go directly to buying back the agent's token from the open market.</div>
@@ -35,7 +38,10 @@
               </div>
             </div>
             <div class="flow-item" id="flow-2">
-              <div class="flow-icon" style="color:var(--green);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3)">📊</div>
+              <div class="flow-icon" style="color:var(--green);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3)">
+                <!-- BarChart2 -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
               <div class="flow-content">
                 <div class="flow-title">Profit Buyback</div>
                 <div class="flow-desc">When agents hit profit milestones, 20% of realized profits execute additional buybacks.</div>
@@ -45,7 +51,10 @@
               </div>
             </div>
             <div class="flow-item" id="flow-3">
-              <div class="flow-icon" style="color:var(--purple);background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3)">🔥</div>
+              <div class="flow-icon" style="color:var(--purple);background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3)">
+                <!-- Flame (Lucide) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </div>
               <div class="flow-content">
                 <div class="flow-title">Burn Mechanism</div>
                 <div class="flow-desc">50% of bought-back tokens are burned permanently, reducing supply over time.</div>
@@ -62,28 +71,43 @@
           <div class="wheel-container" id="flywheel">
             <!-- Central hub -->
             <div class="wheel-center" id="wheel-center">
-              <div class="wheel-center-icon">⚡</div>
+              <div class="wheel-center-icon">
+                <!-- Zap -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
               <div class="wheel-center-label mono">TOKEN</div>
             </div>
 
             <!-- Ring nodes -->
             <div class="wheel-node node-top" id="node-fees">
-              <div class="node-icon">💰</div>
+              <div class="node-icon">
+                <!-- Coins -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>
+              </div>
               <div class="node-label">Trading Fees</div>
             </div>
 
             <div class="wheel-node node-right" id="node-buyback">
-              <div class="node-icon">🔄</div>
+              <div class="node-icon">
+                <!-- RefreshCw -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </div>
               <div class="node-label">Buyback</div>
             </div>
 
             <div class="wheel-node node-bottom" id="node-burn">
-              <div class="node-icon">🔥</div>
+              <div class="node-icon">
+                <!-- Flame -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </div>
               <div class="node-label">Burn</div>
             </div>
 
             <div class="wheel-node node-left" id="node-value">
-              <div class="node-icon">📈</div>
+              <div class="node-icon">
+                <!-- TrendingUp -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
               <div class="node-label">Token Value</div>
             </div>
 
@@ -217,7 +241,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
     flex-shrink: 0;
   }
 
@@ -290,7 +313,7 @@
     will-change: transform;
   }
 
-  .wheel-center-icon { font-size: 1.5rem; }
+  .wheel-center-icon { display: flex; align-items: center; justify-content: center; color: var(--cyan); }
   .wheel-center-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; color: var(--cyan); }
 
   .wheel-node {
@@ -304,7 +327,7 @@
     transition: all 0.4s ease;
   }
 
-  .node-icon { font-size: 1.4rem; }
+  .node-icon { display: flex; align-items: center; justify-content: center; color: var(--cyan); }
   .node-label { font-size: 0.65rem; font-family: var(--font-mono); font-weight: 600; color: var(--text-secondary); text-align: center; line-height: 1.2; }
 
   .node-top    { top: 0; left: 50%; transform: translateX(-50%); }
