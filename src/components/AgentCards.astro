@@ -64,15 +64,15 @@ const agents = [
 ---
 
 <section class="agents-section section">
-  <div class="container">
-    <div class="agents-header" data-reveal>
+  <div class="container" style="max-width: 100%; padding: 0;">
+    <div class="agents-header" data-reveal style="padding: 0 2rem;">
       <h2 class="agents-title">
         <span class="title-line">Top</span>
         <span class="title-line title-highlight">Trading Agents</span>
       </h2>
     </div>
 
-    <div class="agents-items">
+    <div class="agents-items" style="width: 100%;">
       {agents.map((agent, i) => (
         <div class="agent-card" data-reveal style={`--item-bg: ${agent.bg}; --item-accent: ${agent.color}`}>
           <div class="agent-card-inner">
@@ -166,10 +166,10 @@ const agents = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--padding-xl) var(--padding-2xl);
+    padding: 3rem 4rem;
     position: relative;
     z-index: 2;
-    gap: var(--gap-xl);
+    gap: 3rem;
   }
 
   .agent-top {
@@ -214,7 +214,7 @@ const agents = [
   }
 
   .agent-text {
-    max-width: 700px;
+    max-width: 900px;
   }
 
   .agent-name {
