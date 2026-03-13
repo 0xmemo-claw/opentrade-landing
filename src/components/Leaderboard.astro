@@ -96,6 +96,8 @@ const rows = [
     overflow: hidden;
     box-sizing: border-box;
     padding-top: var(--nav-height, 64px);
+    position: relative;
+    z-index: 1;
   }
 
   .lb-header-section {
@@ -312,19 +314,24 @@ const rows = [
   const scrollInner = document.getElementById('lb-scroll-inner');
 
   if (section && scrollInner) {
-    const scrollTween = gsap.to(scrollInner, {
+    // Build timeline: horizontal scroll then idle breathing room
+    const tl = gsap.timeline();
+    tl.to(scrollInner, {
       x: () => -(scrollInner.offsetWidth - window.innerWidth),
       ease: 'none',
+      duration: 1,
     });
+    // Dead time — leaderboard stays pinned but nothing moves
+    tl.to({}, { duration: 0.6 });
 
     ScrollTrigger.create({
       trigger: section,
       start: 'top top',
-      end: () => `+=${scrollInner.offsetWidth - window.innerWidth}`,
+      end: () => `+=${scrollInner.offsetWidth - window.innerWidth + window.innerHeight}`,
       pin: true,
       pinSpacing: true,
       scrub: 1,
-      animation: scrollTween,
+      animation: tl,
       invalidateOnRefresh: true,
     });
 
